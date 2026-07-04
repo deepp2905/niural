@@ -29,6 +29,9 @@ export const FX_RATES: Record<string, FxRate> = {
   USDC: { pair: 'USD/USDC', base: 'USD', quote: 'USDC', rate: 1 },
 };
 
+/** The paying company (Maya's startup, §1). */
+export const COMPANY_NAME = 'Northwind Labs';
+
 export const FEE_MODEL: Record<PayoutMethodKind, number> = {
   bank: 4.99,
   wallet: 1.99,
