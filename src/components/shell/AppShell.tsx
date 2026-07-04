@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Logo } from '../brand/Logo';
 import { WalletChip } from '../WalletChip';
+import { Tooltip } from '../ui/Tooltip';
 import { cn } from '../../lib/cn';
 
 interface NavItem {
@@ -37,15 +38,15 @@ export function AppShell() {
         <nav className="flex flex-col gap-0.5">
           {NAV.map((item) =>
             item.disabled ? (
-              <span
-                key={item.label}
-                title="Out of scope for this prototype"
-                aria-disabled
-                className="flex cursor-not-allowed items-center gap-2.5 rounded-md px-2.5 py-2 text-13 text-text-tertiary opacity-60"
-              >
-                {item.icon}
-                {item.label}
-              </span>
+              <Tooltip key={item.label} content="Out of scope for this prototype" side="right">
+                <span
+                  aria-disabled
+                  className="flex cursor-not-allowed items-center gap-2.5 rounded-md px-2.5 py-2 text-13 text-text-tertiary opacity-60"
+                >
+                  {item.icon}
+                  {item.label}
+                </span>
+              </Tooltip>
             ) : (
               <NavLink
                 key={item.label}

@@ -9,6 +9,10 @@ export default {
       transparent: 'transparent',
       current: 'currentColor',
       inherit: 'inherit',
+      // Absolute white/black for the rare element that must not theme-flip
+      // (e.g. text on a danger button). Not for general use.
+      white: '#ffffff',
+      black: '#000000',
 
       // Surfaces
       page: 'var(--surface-page)',
