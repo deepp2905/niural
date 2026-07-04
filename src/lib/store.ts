@@ -20,6 +20,9 @@ interface AppState {
   dismissed: Record<string, boolean>;
   /** Whether the low-balance scenario is active (§6b toggle). */
   lowBalanceScenario: boolean;
+  /** Review screen dark-mode toggle (§5) — shared so the takeover shell themes
+   *  together with the content instead of leaving a light header seam. */
+  reviewDark: boolean;
 
   upsertDraft: (draft: Draft) => void;
   getDraft: (id: string) => Draft | undefined;
@@ -30,6 +33,7 @@ interface AppState {
   cancelPayout: (id: string) => void;
   dismiss: (id: string) => void;
   setLowBalanceScenario: (on: boolean) => void;
+  setReviewDark: (on: boolean) => void;
 }
 
 export const useStore = create<AppState>((set, get) => ({
@@ -39,6 +43,7 @@ export const useStore = create<AppState>((set, get) => ({
   cancelled: {},
   dismissed: {},
   lowBalanceScenario: false,
+  reviewDark: false,
 
   upsertDraft: (draft) => set((s) => ({ drafts: { ...s.drafts, [draft.id]: draft } })),
   getDraft: (id) => get().drafts[id],
@@ -56,6 +61,7 @@ export const useStore = create<AppState>((set, get) => ({
   cancelPayout: (id) => set((s) => ({ cancelled: { ...s.cancelled, [id]: true } })),
   dismiss: (id) => set((s) => ({ dismissed: { ...s.dismissed, [id]: true } })),
   setLowBalanceScenario: (on) => set({ lowBalanceScenario: on }),
+  setReviewDark: (on) => set({ reviewDark: on }),
 }));
 
 /** Create a short unique id (drafts, etc.). */

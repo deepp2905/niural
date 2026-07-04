@@ -58,8 +58,7 @@ export interface Contractor {
   id: string;
   name: string;
   country: string;
-  countryCode: string; // ISO-2 for flag, e.g. "IN"
-  flag: string; // emoji flag
+  countryCode: string; // ISO-2, e.g. "IN"
   currency: CurrencyCode;
   defaultMethod: PayoutMethod;
   /** Alternate methods offered in the create flow. */

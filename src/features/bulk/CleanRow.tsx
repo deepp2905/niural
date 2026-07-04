@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { BulkItem, Contractor } from '../../lib/types';
 import { formatUSD } from '../../lib/format';
 import { ContractorAvatar } from '../../components/ContractorAvatar';
+import { CheckIcon } from '../../components/ui/Icon';
 import { cn } from '../../lib/cn';
 
 /** A clean payout row (§7C). Compact by default; expanding shows the same
@@ -31,7 +32,7 @@ export function CleanRow({
           <p className="truncate text-12 text-text-tertiary">{item.reason}</p>
         </div>
         <span className="hidden items-center gap-1 text-11 text-success sm:inline-flex">
-          <span>✓</span> clean
+          <CheckIcon size={13} /> clean
         </span>
         <button
           type="button"

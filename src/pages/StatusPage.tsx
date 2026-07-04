@@ -11,6 +11,7 @@ import { StatusChip } from '../components/ui/StatusChip';
 import { Banner } from '../components/ui/Banner';
 import { Button } from '../components/ui/Button';
 import { ContractorAvatar } from '../components/ContractorAvatar';
+import { ArrowRightIcon } from '../components/ui/Icon';
 import { FallbackLadder } from '../features/status/FallbackLadder';
 import { formatCountdown } from '../lib/format';
 
@@ -143,8 +144,12 @@ export function StatusPage() {
 
       {/* Contractor view link */}
       <div className="flex items-center justify-between border-t border-border-subtle pt-4">
-        <Link to={`/contractor/${payout.id}`} className="text-13 text-info underline underline-offset-2">
-          See {contractor.name.split(' ')[0]}'s view →
+        <Link
+          to={`/contractor/${payout.id}`}
+          className="inline-flex items-center gap-1.5 text-13 text-info hover:underline"
+        >
+          See {contractor.name.split(' ')[0]}'s view
+          <ArrowRightIcon size={14} />
         </Link>
         <Link to="/payments" className="text-13 text-text-secondary hover:text-text-primary">
           Back to payments

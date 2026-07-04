@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import type { CheckItem } from '../lib/review';
 import { Button } from './ui/Button';
+import { CheckIcon, AlertTriangleIcon, BlockIcon } from './ui/Icon';
 import { cn } from '../lib/cn';
 
-const ICON: Record<CheckItem['status'], { glyph: string; color: string }> = {
-  verified: { glyph: '✓', color: 'text-success' },
-  warn: { glyph: '⚠', color: 'text-warn' },
-  blocked: { glyph: '⛔', color: 'text-danger' },
+const ICON: Record<CheckItem['status'], { Glyph: typeof CheckIcon; color: string }> = {
+  verified: { Glyph: CheckIcon, color: 'text-success' },
+  warn: { Glyph: AlertTriangleIcon, color: 'text-warn' },
+  blocked: { Glyph: BlockIcon, color: 'text-danger' },
 };
 
 /** Row of quiet, expandable check items (§5D). Trust is inspectable — each
@@ -35,7 +36,7 @@ function CheckRow({
   onRequestRenewal?: () => void;
 }) {
   const [open, setOpen] = useState(false);
-  const icon = ICON[check.status];
+  const { Glyph, color } = ICON[check.status];
 
   return (
     <div>
@@ -45,9 +46,7 @@ function CheckRow({
         aria-expanded={open}
         className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left transition-colors hover:bg-sunken"
       >
-        <span className={cn('shrink-0 text-13', icon.color)} aria-hidden>
-          {icon.glyph}
-        </span>
+        <Glyph size={15} className={cn('shrink-0', color)} />
         <span
           className={cn(
             'flex-1 text-13',

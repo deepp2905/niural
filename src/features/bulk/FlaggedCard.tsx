@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import type { BulkItem, Contractor } from '../../lib/types';
 import { formatUSD } from '../../lib/format';
+import { getInvoice } from '../../lib/mock';
 import { ContractorAvatar } from '../../components/ContractorAvatar';
 import { SparkGlyph } from '../../components/ui/AIChip';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
+import { Drawer } from '../../components/ui/Drawer';
+import { InvoiceDocument } from '../create/InvoiceDocument';
 import { cn } from '../../lib/cn';
 
 type Resolution = 'approved' | 'held' | undefined;
@@ -30,9 +32,11 @@ export function FlaggedCard({
 }) {
   const [evidenceOpen, setEvidenceOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [invoiceOpen, setInvoiceOpen] = useState(false);
   const [typed, setTyped] = useState('');
   const first = contractor.name.split(' ')[0];
   const nameMatches = typed.trim().toLowerCase() === contractor.name.toLowerCase();
+  const invoice = item.invoiceId ? getInvoice(item.invoiceId) : undefined;
 
   if (resolution) {
     return (
@@ -131,19 +135,31 @@ export function FlaggedCard({
                 <Button size="sm" variant="ghost" onClick={onHold}>
                   Hold
                 </Button>
-                {item.invoiceId && (
-                  <Link
-                    to={`/payments/new?invoice=${item.invoiceId}`}
+                {invoice && (
+                  <button
+                    type="button"
+                    onClick={() => setInvoiceOpen(true)}
                     className="text-12 text-text-secondary underline underline-offset-2 hover:text-text-primary"
                   >
                     View invoice
-                  </Link>
+                  </button>
                 )}
               </>
             )}
           </div>
         </div>
       </div>
+
+      {invoice && (
+        <Drawer
+          open={invoiceOpen}
+          onOpenChange={setInvoiceOpen}
+          title={`Invoice ${invoice.number}`}
+          description={`${contractor.name} · ${formatUSD(item.amountUsd)}`}
+        >
+          <InvoiceDocument invoice={invoice} hoveredField={null} />
+        </Drawer>
+      )}
     </div>
   );
 }

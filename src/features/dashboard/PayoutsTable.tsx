@@ -1,10 +1,16 @@
 import { Link } from 'react-router-dom';
-import type { Payout } from '../../lib/types';
+import type { Payout, PayoutMethodKind } from '../../lib/types';
 import { PAYOUTS, getContractor, rateFor } from '../../lib/mock';
 import { useStore } from '../../lib/store';
 import { formatUSD, formatMoney, formatDateShort } from '../../lib/format';
 import { ContractorAvatar } from '../../components/ContractorAvatar';
 import { StatusChip } from '../../components/ui/StatusChip';
+
+const METHOD_LABEL: Record<PayoutMethodKind, string> = {
+  bank: 'Bank',
+  wallet: 'Wallet',
+  stablecoin: 'USDC',
+};
 
 function arrivalCopy(p: Payout): string {
   if (p.arrivedAt) return `Arrived ${formatDateShort(p.arrivedAt)}`;
@@ -13,13 +19,13 @@ function arrivalCopy(p: Payout): string {
   return '—';
 }
 
-const METHOD_LABEL = { bank: 'Bank', wallet: 'Wallet', stablecoin: 'USDC' } as const;
-
-/** Payouts table (§3B). Rows link to their status page. Session-committed
- *  payouts appear on top of the mock set. */
+/** Payouts table (§3B). Rows link to their status page; unsent drafts link back
+ *  to review so they can be resumed. Session state appears above the mock set. */
 export function PayoutsTable() {
   const sent = useStore((s) => s.sentPayouts);
+  const drafts = useStore((s) => s.drafts);
   const sentList = Object.values(sent).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const draftList = Object.values(drafts).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   const rows = [...sentList, ...PAYOUTS.filter((p) => !sent[p.id])];
 
   return (
@@ -36,6 +42,46 @@ export function PayoutsTable() {
           </tr>
         </thead>
         <tbody>
+          {/* Resumable drafts */}
+          {draftList.map((d) => {
+            const c = getContractor(d.contractorId);
+            if (!c) return null;
+            const receive = formatMoney(d.amountSendUsd * rateFor(c.currency), c.currency, {
+              decimals: c.currency === 'USDC' ? 2 : 0,
+            });
+            return (
+              <tr key={d.id} className="border-b border-border-subtle last:border-b-0 hover:bg-sunken">
+                <Td>
+                  <Link to={`/payments/review/${d.id}`} className="flex items-center gap-2.5">
+                    <ContractorAvatar contractor={c} size="sm" />
+                    <span className="text-text-primary">{c.name}</span>
+                  </Link>
+                </Td>
+                <Td>
+                  <span className="money text-text-secondary">{d.invoiceNumber ?? '—'}</span>
+                </Td>
+                <Td>
+                  <div className="leading-tight">
+                    <span className="money text-text-primary">{formatUSD(d.amountSendUsd)}</span>
+                    <span className="money block text-11 text-text-tertiary">
+                      {receive} {c.currency}
+                    </span>
+                  </div>
+                </Td>
+                <Td>
+                  <span className="text-text-secondary">{METHOD_LABEL[d.methodKind]}</span>
+                </Td>
+                <Td>
+                  <StatusChip status="draft" />
+                </Td>
+                <Td>
+                  <Link to={`/payments/review/${d.id}`} className="text-text-secondary hover:text-text-primary">
+                    Resume
+                  </Link>
+                </Td>
+              </tr>
+            );
+          })}
           {rows.map((p) => {
             const c = getContractor(p.contractorId);
             if (!c) return null;

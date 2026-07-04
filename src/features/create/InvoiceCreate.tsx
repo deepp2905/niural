@@ -15,11 +15,12 @@ import { useStore, makeId } from '../../lib/store';
 import { buildFlags } from '../../lib/anomaly';
 import { settlementFromMethod, walletImpact } from '../../lib/settlement';
 import { formatMoney, formatDateLong } from '../../lib/format';
-import { AIChip } from '../../components/ui/AIChip';
+import { AIChip, SparkGlyph } from '../../components/ui/AIChip';
 import { Field, Input, EditedMarker } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Combobox } from '../../components/ui/Combobox';
 import { ContractorAvatar } from '../../components/ContractorAvatar';
+import { CheckIcon, AlertTriangleIcon } from '../../components/ui/Icon';
 import { MethodCards } from './MethodCards';
 import { PurposeCodeSelect } from './PurposeCodeSelect';
 import { InvoiceDocument } from './InvoiceDocument';
@@ -125,15 +126,15 @@ export function InvoiceCreate({
         <header className="mb-5">
           <h1 className="text-24 font-600 tracking-tight text-text-primary">Review extracted payout</h1>
           <p className="mt-1 flex items-center gap-1.5 text-13 text-text-secondary">
-            <AIChip provenance="I read this payout from the invoice on the left. Verify each field before continuing." />
-            I filled these from the invoice — verify before continuing.
+            <SparkGlyph className="shrink-0 text-ai" />
+            Read from the invoice on the left. Verify each field before continuing.
           </p>
         </header>
 
         {duplicateAcknowledged && invoice.duplicateOfInvoiceId && (
-          <p className="mb-4 rounded-md bg-warn-surface px-3 py-2 text-12 text-text-primary">
-            ⚠ Duplicate acknowledged — you confirmed this isn't a repeat of {invoice.number}. This
-            note carries to review.
+          <p className="mb-4 flex items-start gap-1.5 rounded-md bg-warn-surface px-3 py-2 text-12 text-text-primary">
+            <AlertTriangleIcon size={14} className="mt-[1px] shrink-0 text-warn" />
+            Duplicate acknowledged — this note carries to review.
           </p>
         )}
 
@@ -174,7 +175,7 @@ export function InvoiceCreate({
                     </div>
                     {contractorConfirmed ? (
                       <span className="inline-flex items-center gap-1 text-12 text-success">
-                        <span>✓</span> confirmed
+                        <CheckIcon size={13} /> confirmed
                       </span>
                     ) : (
                       <AIChip confidence="medium" provenance={invoice.fields.contractorMatch.evidence} />

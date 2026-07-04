@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useStore } from '../lib/store';
 import { WALLET, WALLET_LOW_BALANCE } from '../lib/mock';
@@ -22,6 +22,7 @@ import { CountdownChip } from '../components/ui/CountdownChip';
 import { Button } from '../components/ui/Button';
 import { Banner } from '../components/ui/Banner';
 import { ContractorAvatar } from '../components/ContractorAvatar';
+import { CheckIcon } from '../components/ui/Icon';
 import { cn } from '../lib/cn';
 
 const RATE_LOCK_SECONDS = 900; // 15:00
@@ -34,11 +35,15 @@ export function ReviewPage() {
   const dismissed = useStore((s) => s.dismissed);
   const dismiss = useStore((s) => s.dismiss);
   const lowBalance = useStore((s) => s.lowBalanceScenario);
+  const dark = useStore((s) => s.reviewDark);
+  const setReviewDark = useStore((s) => s.setReviewDark);
 
   const draft = storeDraft ?? demoDraft();
   const resolved = useMemo(() => resolveDraft(draft), [draft]);
 
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  // Leave the shell light when we navigate away from review.
+  useEffect(() => () => setReviewDark(false), [setReviewDark]);
+
   const [senderCovers, setSenderCovers] = useState(draft.senderCoversFees);
   const [rate, setRate] = useState(resolved?.rate ?? 1);
   const [heldLong, setHeldLong] = useState(false);
@@ -86,11 +91,8 @@ export function ReviewPage() {
   };
 
   return (
-    <div
-      data-theme={theme}
-      className="-mx-4 -my-8 min-h-[calc(100vh-3.5rem)] bg-page px-4 py-8 text-text-primary sm:-mx-6 sm:px-6"
-    >
-      <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-4xl">
+      <div>
         {/* Screen header with the theme toggle (only this screen, §5) */}
         <div className="mb-6 flex items-center justify-between">
           <div>
@@ -101,12 +103,12 @@ export function ReviewPage() {
           </div>
           <button
             type="button"
-            onClick={() => setTheme((t) => (t === 'light' ? 'dark' : 'light'))}
+            onClick={() => setReviewDark(!dark)}
             className="grid h-9 w-9 place-items-center rounded-md border border-border-subtle bg-raised text-text-secondary hover:text-text-primary"
-            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+            aria-label={`Switch to ${dark ? 'light' : 'dark'} mode`}
             title="Toggle theme (this screen)"
           >
-            {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+            {dark ? <SunIcon /> : <MoonIcon />}
           </button>
         </div>
 
@@ -200,8 +202,9 @@ export function ReviewPage() {
                 onRequestRenewal={() => setRenewalRequested(true)}
               />
               {renewalRequested && (
-                <p className="text-12 text-success">
-                  ✓ Renewal request sent to {contractor.name.split(' ')[0]} — the payout will send
+                <p className="flex items-center gap-1.5 text-12 text-success">
+                  <CheckIcon size={13} className="shrink-0" />
+                  Renewal request sent to {contractor.name.split(' ')[0]} — the payout sends
                   automatically once the form is on file.
                 </p>
               )}

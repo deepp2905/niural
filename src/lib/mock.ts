@@ -78,7 +78,6 @@ export const CONTRACTORS: Contractor[] = [
     name: 'Priya Sharma',
     country: 'India',
     countryCode: 'IN',
-    flag: '🇮🇳',
     currency: 'INR',
     defaultMethod: {
       kind: 'bank',
@@ -116,7 +115,6 @@ export const CONTRACTORS: Contractor[] = [
     name: 'Mateo Aguirre',
     country: 'Argentina',
     countryCode: 'AR',
-    flag: '🇦🇷',
     currency: 'USDC',
     defaultMethod: stablecoinMethod(true),
     methods: [
@@ -145,7 +143,6 @@ export const CONTRACTORS: Contractor[] = [
     name: 'Chen Wei',
     country: 'Philippines',
     countryCode: 'PH',
-    flag: '🇵🇭',
     currency: 'PHP',
     defaultMethod: walletMethod(),
     methods: [
@@ -171,7 +168,6 @@ export const CONTRACTORS: Contractor[] = [
     name: 'Sofia Marin',
     country: 'Colombia',
     countryCode: 'CO',
-    flag: '🇨🇴',
     currency: 'COP',
     defaultMethod: {
       kind: 'bank',
@@ -209,7 +205,6 @@ export const CONTRACTORS: Contractor[] = [
     name: 'Aleksei Volkov',
     country: 'Poland',
     countryCode: 'PL',
-    flag: '🇵🇱',
     currency: 'PLN',
     defaultMethod: {
       kind: 'bank',
@@ -248,7 +243,6 @@ export const CONTRACTORS: Contractor[] = [
     name: 'Amara Okafor',
     country: 'Nigeria',
     countryCode: 'NG',
-    flag: '🇳🇬',
     currency: 'NGN',
     defaultMethod: walletMethod(),
     methods: [

@@ -1,7 +1,7 @@
 import type { WalletImpact } from '../lib/settlement';
 import { formatUSD, formatDateShort } from '../lib/format';
 import { addBusinessDays } from '../lib/review';
-import { cn } from '../lib/cn';
+import { AlertTriangleIcon } from './ui/Icon';
 
 /** Condensed funding card on the review screen (§5C). Enters a warning state
  *  when the payout exceeds the wallet balance (§6b). */
@@ -23,9 +23,9 @@ export function WalletFundingCard({ impact }: { impact: WalletImpact }) {
 
   const topUpArrival = addBusinessDays(new Date('2026-07-03T12:00:00Z'), 3);
   return (
-    <div className={cn('rounded-xl border border-border-subtle bg-warn-surface p-4')}>
+    <div className="rounded-xl border border-border-subtle bg-warn-surface p-4">
       <p className="flex items-center gap-1.5 text-13 font-500 text-text-primary">
-        <span className="text-warn">⚠</span>
+        <AlertTriangleIcon size={15} className="shrink-0 text-warn" />
         This payout exceeds your USD balance by{' '}
         <span className="money">{formatUSD(impact.shortfallUsd)}</span>
       </p>

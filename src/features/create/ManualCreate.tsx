@@ -119,6 +119,7 @@ export function ManualCreate() {
           <Field label="Amount" htmlFor="amount">
             <CurrencyAmountInput
               id="amount"
+              autoFocus
               amountUsd={amountUsd}
               onChange={setAmountUsd}
               receiveCurrency={contractor.currency}

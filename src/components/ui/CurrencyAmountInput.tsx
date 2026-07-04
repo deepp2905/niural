@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { CurrencyCode } from '../../lib/types';
 import { formatMoney, formatRate } from '../../lib/format';
 import type { AmountAnomaly, GhostPrior } from '../../lib/anomaly';
+import { AlertTriangleIcon } from './Icon';
 import { cn } from '../../lib/cn';
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
   onAcceptGhost?: () => void;
   anomaly?: AmountAnomaly | null;
   id?: string;
+  autoFocus?: boolean;
 }
 
 /** The one bespoke input (§8d.2): USD send paired with a live-converted receive
@@ -26,6 +28,7 @@ export function CurrencyAmountInput({
   onAcceptGhost,
   anomaly,
   id,
+  autoFocus,
 }: Props) {
   const [text, setText] = useState(amountUsd != null ? String(amountUsd) : '');
 
@@ -69,6 +72,7 @@ export function CurrencyAmountInput({
             <span className="money shrink-0 text-16 text-text-tertiary">$</span>
             <input
               id={id}
+              autoFocus={autoFocus}
               inputMode="decimal"
               value={showGhost ? '' : text}
               placeholder={showGhost ? String(ghost!.amountUsd) : '0.00'}
@@ -127,9 +131,7 @@ export function CurrencyAmountInput({
       {/* Anomaly flag (non-blocking, persists to review) */}
       {anomaly && (
         <p className="flex items-start gap-1.5 rounded-md bg-warn-surface px-2.5 py-1.5 text-12 text-text-primary">
-          <span className="mt-[1px] text-warn" aria-hidden>
-            ⚠
-          </span>
+          <AlertTriangleIcon size={14} className="mt-[1px] shrink-0 text-warn" />
           <span>{anomaly.message}</span>
         </p>
       )}

@@ -5,6 +5,7 @@ import { settlementFromMethod } from '../lib/settlement';
 import { formatMoney, formatUSD, formatRate, formatDateShort } from '../lib/format';
 import { Timeline } from '../components/ui/Timeline';
 import { Button } from '../components/ui/Button';
+import { ArrowLeftIcon } from '../components/ui/Icon';
 import { Logo } from '../components/brand/Logo';
 
 /** Contractor-side remittance view (§6f). Rendered in a device-suggestive
@@ -19,11 +20,9 @@ export function ContractorPage() {
     <div className="min-h-screen bg-sunken px-4 py-10">
       <div className="mx-auto w-full max-w-[420px]">
         <div className="overflow-hidden rounded-[24px] border border-border-subtle bg-page shadow-takeover">
-          {/* device status bar */}
-          <div className="flex items-center justify-between px-5 pt-4 text-11 text-text-tertiary">
-            <span className="money">9:41</span>
-            <Logo className="scale-90" />
-            <span className="money">100%</span>
+          {/* app bar */}
+          <div className="flex items-center justify-center border-b border-border-subtle px-5 py-3.5">
+            <Logo className="scale-95" />
           </div>
 
           {!payout || !contractor ? (
@@ -35,9 +34,13 @@ export function ContractorPage() {
           )}
         </div>
 
-        <div className="mt-6 text-center">
-          <Link to="/payments" className="text-12 text-text-tertiary underline underline-offset-2">
-            ← Back to admin app
+        <div className="mt-6 flex justify-center">
+          <Link
+            to="/payments"
+            className="inline-flex items-center gap-1.5 text-12 text-text-tertiary hover:text-text-secondary"
+          >
+            <ArrowLeftIcon size={13} />
+            Back to admin app
           </Link>
         </div>
       </div>

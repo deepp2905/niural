@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import type { Contractor } from '../../lib/types';
 import { ContractorAvatar } from '../../components/ContractorAvatar';
 import { VerificationBadge } from '../../components/VerificationBadge';
+import { CheckIcon, BlockIcon, AlertTriangleIcon } from '../../components/ui/Icon';
 import { formatUSD, formatDateShort, formatMonthYear } from '../../lib/format';
 
 /** Compact context card that slides in when a contractor is selected (§4a.1).
@@ -53,16 +54,19 @@ export function ContractorContextCard({ contractor }: { contractor: Contractor }
               <Row label="Tax form">
                 {tax.status === 'valid' ? (
                   <span className="inline-flex items-center gap-1.5 text-13 text-text-secondary">
-                    <span className="text-success">✓</span>
+                    <CheckIcon size={14} className="text-success" />
                     {tax.kind} on file, valid through{' '}
                     {tax.validThrough ? formatMonthYear(tax.validThrough) : '—'}
                   </span>
                 ) : tax.status === 'expired' ? (
                   <span className="inline-flex items-center gap-1.5 text-13 text-danger">
-                    ⛔ {tax.kind} expired {tax.expiredOn ? formatMonthYear(tax.expiredOn) : ''}
+                    <BlockIcon size={14} /> {tax.kind} expired{' '}
+                    {tax.expiredOn ? formatMonthYear(tax.expiredOn) : ''}
                   </span>
                 ) : (
-                  <span className="text-13 text-warn">⚠ {tax.kind} missing</span>
+                  <span className="inline-flex items-center gap-1.5 text-13 text-warn">
+                    <AlertTriangleIcon size={14} /> {tax.kind} missing
+                  </span>
                 )}
               </Row>
 

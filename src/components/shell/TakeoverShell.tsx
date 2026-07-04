@@ -1,5 +1,7 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Logo } from '../brand/Logo';
+import { ArrowLeftIcon, CheckIcon } from '../ui/Icon';
+import { useStore } from '../../lib/store';
 import { cn } from '../../lib/cn';
 
 const STEPS = ['Details', 'Review', 'Sent'] as const;
@@ -15,18 +17,20 @@ function activeStep(pathname: string): number {
 export function TakeoverShell() {
   const { pathname } = useLocation();
   const step = activeStep(pathname);
+  // Dark mode is scoped to the review screen (§5); theme the whole takeover so
+  // the header doesn't leave a light seam above dark content.
+  const reviewDark = useStore((s) => s.reviewDark);
+  const dark = reviewDark && pathname.startsWith('/payments/review');
 
   return (
-    <div className="min-h-screen bg-page text-text-primary">
+    <div data-theme={dark ? 'dark' : undefined} className="min-h-screen bg-page text-text-primary">
       <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b border-border-subtle bg-page/90 px-4 backdrop-blur sm:px-6">
         <div className="flex items-center gap-4">
           <Link
             to="/payments"
             className="flex items-center gap-1.5 rounded-md px-2 py-1 text-13 text-text-secondary hover:bg-sunken hover:text-text-primary"
           >
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-              <path d="M10 3 5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <ArrowLeftIcon size={14} />
             Back to payments
           </Link>
         </div>
@@ -50,7 +54,7 @@ export function TakeoverShell() {
                     i > step && 'border border-border-strong text-text-tertiary',
                   )}
                 >
-                  {i < step ? '✓' : i + 1}
+                  {i < step ? <CheckIcon size={11} /> : i + 1}
                 </span>
                 {label}
               </span>
