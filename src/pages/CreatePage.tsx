@@ -1,19 +1,32 @@
+import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ManualCreate } from '../features/create/ManualCreate';
+import { InvoiceCreate } from '../features/create/InvoiceCreate';
+import { DuplicateInterstitial } from '../features/create/DuplicateInterstitial';
+import { getInvoice } from '../lib/mock';
 import { Placeholder } from '../components/Placeholder';
 
 export function CreatePage() {
   const [params] = useSearchParams();
   const invoiceId = params.get('invoice');
+  const invoice = invoiceId ? getInvoice(invoiceId) : undefined;
 
-  if (invoiceId) {
-    // Invoice-parsed path lands in Phase 3.
+  // Duplicate guard: gate the form behind a blocking interstitial (§4b).
+  const [dupPassed, setDupPassed] = useState(false);
+
+  if (!invoiceId) return <ManualCreate />;
+
+  if (!invoice) {
     return (
-      <Placeholder title="Create payout — invoice-parsed path" phase="Phase 3 · §4b">
-        Two-pane invoice viewer + AI-extracted form for {invoiceId} (§4b).
+      <Placeholder title="Invoice not found" phase="§4b">
+        No mock invoice matches “{invoiceId}”.
       </Placeholder>
     );
   }
 
-  return <ManualCreate />;
+  if (invoice.duplicateOfInvoiceId && !dupPassed) {
+    return <DuplicateInterstitial invoice={invoice} onContinue={() => setDupPassed(true)} />;
+  }
+
+  return <InvoiceCreate invoice={invoice} duplicateAcknowledged={dupPassed} />;
 }

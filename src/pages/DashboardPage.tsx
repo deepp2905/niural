@@ -33,6 +33,7 @@ export function DashboardPage() {
           {[
             { to: '/payments/new', label: 'Create payout — manual (§4a, Phase 2)' },
             { to: '/payments/new?invoice=inv_006', label: 'Create payout — invoice (§4b, Phase 3)' },
+            { to: '/payments/new?invoice=inv_007', label: 'Create payout — duplicate guard (§4b)' },
             { to: '/payments/review/draft_demo', label: 'Review & confirm (§5, Phase 4)' },
             { to: '/payments/status/pay_002', label: 'Status — paid (§6a, Phase 5)' },
             { to: '/payments/status/pay_009', label: 'Status — failed + fallback (§6d, Phase 5)' },
