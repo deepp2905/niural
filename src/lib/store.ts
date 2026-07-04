@@ -26,6 +26,7 @@ interface AppState {
   recordSentPayout: (payout: Payout) => void;
   getSentPayout: (id: string) => Payout | undefined;
   resolveBulkItem: (id: string, verdict: 'approved' | 'held') => void;
+  unresolveBulkItem: (id: string) => void;
   cancelPayout: (id: string) => void;
   dismiss: (id: string) => void;
   setLowBalanceScenario: (on: boolean) => void;
@@ -46,6 +47,12 @@ export const useStore = create<AppState>((set, get) => ({
   getSentPayout: (id) => get().sentPayouts[id],
   resolveBulkItem: (id, verdict) =>
     set((s) => ({ bulkResolved: { ...s.bulkResolved, [id]: verdict } })),
+  unresolveBulkItem: (id) =>
+    set((s) => {
+      const next = { ...s.bulkResolved };
+      delete next[id];
+      return { bulkResolved: next };
+    }),
   cancelPayout: (id) => set((s) => ({ cancelled: { ...s.cancelled, [id]: true } })),
   dismiss: (id) => set((s) => ({ dismissed: { ...s.dismissed, [id]: true } })),
   setLowBalanceScenario: (on) => set({ lowBalanceScenario: on }),
