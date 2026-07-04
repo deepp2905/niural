@@ -16,3 +16,17 @@ Smallest-reasonable-decision log for places the PRD is silent (§0). Override an
 - **Slim-takeover step labels.** Details → Review → Sent, derived from the route path. `/payments/status/*` maps to the "Sent" step.
 - **Disabled nav tooltips.** Phase 1 uses native `title` attributes for the "Out of scope for this prototype" nav tooltips; the proper Radix `Tooltip` component arrives with the component inventory (§8d).
 - **Avatar identity.** Top-bar avatar shows "MC / Maya Chen · Finance admin" to match the primary persona Maya (§1).
+
+## Phases 2–7
+
+- **Opacity modifiers avoided on token colors.** Tailwind's `/NN` alpha modifier produces invalid output on CSS-variable colors (they aren't in channel format), so borders/fills use solid semantic tokens (`border-border-subtle` + a `*-surface` fill) rather than `border-warn/40`. Enforced everywhere.
+- **`white`/`black` added back.** Since the Tailwind palette was replaced wholesale by semantic tokens, absolute `white`/`black` were re-added solely for elements that must not theme-flip (danger-button text, timeline checkmarks).
+- **Company name.** The paying company is "Northwind Labs" (`COMPANY_NAME`), shown on the contractor remittance view. PRD names the persona (Maya) but not her company.
+- **Arrival dates.** Computed via `addBusinessDays` from the prototype's reference date (2026-07-03), skipping weekends: instant rails = same day, IMPS = +1 business day, others = +2. So the review "Arrives" line is derived, not hardcoded (the PRD's "Jul 10" was illustrative).
+- **Recurring ordinal.** Priya has 3 identical payouts in history; the recurring prompt reads "the third identical monthly payout" (ordinal = count of identical history entries), matching the PRD's "3rd" copy.
+- **Commit → status.** Committing a review builds a `Payout` into the store (`sentPayouts`) and navigates to its status page. Status is `processing` normally, `held` under a compliance block, `scheduled` under low balance. The status page reads store-first, then mock.
+- **Rate-lock durations.** Rate lock = 15:00, cancel window = 30:00, bulk hold window = 45:00, all from the PRD. "Hold 24h" is modeled as a state that stops the countdown and relabels the chip rather than showing a literal 24-hour timer.
+- **Draft-demo fallback.** `/payments/review/draft_demo` (and any unknown draft id) resolves to a default Priya $1,200 draft so the hero screen is viewable without first walking the create flow.
+- **Low-balance scenario switch.** Exposed as a discreet "Simulate low balance (demo)" toggle on the dashboard wallet card, flipping the store flag app-wide — the cleanest way to reach the §6b state without editing data.
+- **Reduced motion.** Framer honored globally via `<MotionConfig reducedMotion="user">`; CSS transitions handled by the `prefers-reduced-motion` block in index.css.
+- **Fake PDF is intentionally un-themed.** The invoice document renders as literal white paper with neutral ink (not semantic tokens) because it represents a physical document, not product chrome.
