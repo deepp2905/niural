@@ -11,7 +11,7 @@ import {
   demoDraft,
 } from '../lib/review';
 import { settlementFromMethod, walletImpact, reQuote } from '../lib/settlement';
-import { formatUSD, formatMoney, formatRate } from '../lib/format';
+import { formatUSD, formatMoney, formatRate, formatPayBasis } from '../lib/format';
 import { useCountdown } from '../lib/useCountdown';
 import { SettlementLedger } from '../components/SettlementLedger';
 import { ChecksStrip } from '../components/ChecksStrip';
@@ -241,6 +241,9 @@ export function ReviewPage() {
               </div>
               <dl className="mt-3 space-y-2 text-12">
                 <RailRow label="Invoice" value={draft.invoiceNumber ?? '—'} mono />
+                {draft.payBasis && (
+                  <RailRow label="Basis" value={formatPayBasis(draft.payBasis)} mono />
+                )}
                 <RailRow label="Method" value={method.label} />
                 <RailRow label="Debit" value={`${formatUSD(settlement.totalDebitUsd)}`} mono />
               </dl>

@@ -4,7 +4,7 @@
  * is implemented by hand and unit-tested (§5, format.test.ts).
  */
 
-import type { CurrencyCode } from './types';
+import type { CurrencyCode, PayBasis } from './types';
 
 interface CurrencyConfig {
   symbol: string;
@@ -99,6 +99,16 @@ export function formatINR(amount: number, opts: FormatOptions = {}): string {
 /** USD helper, e.g. formatUSD(1204.99) => "$1,204.99". */
 export function formatUSD(amount: number, opts: FormatOptions = {}): string {
   return formatWithConfig(amount, CURRENCY.USD, opts);
+}
+
+/** How a manual payout was denominated, e.g. "40 h × ₹2,500" or "Fixed ₹1,00,000". */
+export function formatPayBasis(basis: PayBasis): string {
+  const decimals = basis.currency === 'USDC' ? 2 : 0;
+  if (basis.mode === 'fixed') {
+    return `Fixed ${formatMoney(basis.localAmount, basis.currency, { decimals })}`;
+  }
+  const hours = Number.isInteger(basis.hours) ? String(basis.hours) : basis.hours.toFixed(1);
+  return `${hours} h × ${formatMoney(basis.hourlyRate, basis.currency, { decimals })}`;
 }
 
 /** FX rate to 4 dp, e.g. formatRate(83.215) => "83.2150". */

@@ -169,6 +169,16 @@ export interface DraftFlag {
   message: string;
 }
 
+/**
+ * How the sender denominated a manual payout. Contractors are paid in their
+ * local currency (fixed sum, or an hourly rate × hours); the USD the sender
+ * pays is derived from the corridor rate. `amountSendUsd` on the draft stays
+ * the canonical figure the settlement engine consumes.
+ */
+export type PayBasis =
+  | { mode: 'fixed'; currency: CurrencyCode; localAmount: number }
+  | { mode: 'hourly'; currency: CurrencyCode; hourlyRate: number; hours: number };
+
 /** A payout being composed in the create flow, before it becomes a Payout. */
 export interface Draft {
   id: string;
@@ -176,6 +186,8 @@ export interface Draft {
   invoiceId?: string;
   invoiceNumber?: string;
   amountSendUsd: number;
+  /** Local-currency basis for a manually entered payout (§ local-currency entry). */
+  payBasis?: PayBasis;
   methodKind: PayoutMethodKind;
   senderCoversFees: boolean;
   purposeCode?: { code: string; label: string };

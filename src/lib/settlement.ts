@@ -6,7 +6,21 @@
  * Product stance (§9): zero FX spread. The only cost is the flat method fee.
  */
 
-import type { CurrencyCode, PayoutMethod, Rail } from './types';
+import type { CurrencyCode, PayBasis, PayoutMethod, Rail } from './types';
+
+/** Local-currency total a pay basis denominates: a fixed sum, or rate × hours. */
+export function payBasisLocalTotal(basis: PayBasis): number {
+  return basis.mode === 'fixed' ? basis.localAmount : basis.hourlyRate * basis.hours;
+}
+
+/**
+ * USD the sender pays to deliver a local-currency total, at a USD→local rate.
+ * Inverse of the receive-side conversion (§9: zero FX spread — the corridor
+ * mid-market rate is the only thing between the two figures).
+ */
+export function usdFromLocal(localTotal: number, rate: number): number {
+  return rate > 0 ? localTotal / rate : 0;
+}
 
 export interface SettlementInput {
   /** Amount the sender denominates the payout in, always USD in this product. */

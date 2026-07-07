@@ -1,16 +1,16 @@
 import { useMemo, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import type { Contractor, PayoutMethodKind } from '../../lib/types';
+import type { Contractor, PayBasis, PayoutMethodKind } from '../../lib/types';
 import { CONTRACTORS, WALLET, WALLET_LOW_BALANCE, methodOfKind, rateFor } from '../../lib/mock';
 import { useStore, makeId } from '../../lib/store';
-import { amountAnomaly, ghostPrior, buildFlags } from '../../lib/anomaly';
+import { amountAnomaly, buildFlags } from '../../lib/anomaly';
 import { settlementFromMethod, walletImpact } from '../../lib/settlement';
 import { Combobox } from '../../components/ui/Combobox';
 import { Field } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { ContractorAvatar } from '../../components/ContractorAvatar';
-import { CurrencyAmountInput } from '../../components/ui/CurrencyAmountInput';
+import { PayBasisInput } from '../../components/ui/PayBasisInput';
 import { ContractorContextCard } from './ContractorContextCard';
 import { MethodCards } from './MethodCards';
 import { PurposeCodeSelect } from './PurposeCodeSelect';
@@ -22,10 +22,10 @@ export function ManualCreate() {
 
   const [contractor, setContractor] = useState<Contractor | null>(null);
   const [amountUsd, setAmountUsd] = useState<number | null>(null);
+  const [payBasis, setPayBasis] = useState<PayBasis | null>(null);
   const [methodKind, setMethodKind] = useState<PayoutMethodKind>('bank');
   const [note, setNote] = useState('');
 
-  const ghost = useMemo(() => (contractor ? ghostPrior(contractor) : null), [contractor]);
   const anomaly = useMemo(
     () => (contractor && amountUsd ? amountAnomaly(contractor, amountUsd) : null),
     [contractor, amountUsd],
@@ -35,6 +35,7 @@ export function ManualCreate() {
     setContractor(c);
     setMethodKind(c.defaultMethod.kind);
     setAmountUsd(null);
+    setPayBasis(null);
   };
 
   const canContinue = !!contractor && !!amountUsd && amountUsd > 0;
@@ -63,6 +64,7 @@ export function ManualCreate() {
       id: makeId(),
       contractorId: contractor.id,
       amountSendUsd: amountUsd,
+      payBasis: payBasis ?? undefined,
       methodKind,
       senderCoversFees: true,
       purposeCode: contractor.purposeCode,
@@ -114,17 +116,23 @@ export function ManualCreate() {
           </AnimatePresence>
         </Field>
 
-        {/* 2. Amount */}
+        {/* 2. Amount — denominated in the contractor's currency, USD derived */}
         {contractor && (
-          <Field label="Amount" htmlFor="amount">
-            <CurrencyAmountInput
+          <Field
+            label="Amount"
+            htmlFor="amount"
+            hint={`Set what ${contractor.name.split(' ')[0]} is paid in ${contractor.currency}; we convert to the USD you'll pay at the mid-market rate.`}
+          >
+            <PayBasisInput
+              key={contractor.id}
               id="amount"
               autoFocus
-              amountUsd={amountUsd}
-              onChange={setAmountUsd}
               receiveCurrency={contractor.currency}
               rate={rateFor(contractor.currency)}
-              ghost={ghost}
+              onChange={(r) => {
+                setAmountUsd(r ? r.amountUsd : null);
+                setPayBasis(r ? r.basis : null);
+              }}
               anomaly={anomaly}
             />
           </Field>
