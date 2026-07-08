@@ -12,19 +12,23 @@ const SURFACE_TOKENS = [
   '--surface-page',
   '--surface-raised',
   '--surface-sunken',
+  '--surface-selected',
+  '--surface-inverse',
   '--border-subtle',
   '--border-strong',
 ];
 const ACCENT_TOKENS = [
+  '--action-primary',
   '--accent-ai',
   '--accent-ai-surface',
   '--status-success',
   '--status-warn',
   '--status-danger',
   '--status-info',
-  '--action-primary',
 ];
-const TEXT_TOKENS = ['--text-primary', '--text-secondary', '--text-tertiary'];
+// 500-weight fills — badges, icons, charts (kept distinct from AA text tones).
+const FILL_TOKENS = ['--status-success-fill', '--status-warn-fill', '--status-danger-fill'];
+const TEXT_TOKENS = ['--text-primary', '--text-secondary', '--text-tertiary', '--text-link'];
 
 const TYPE_SCALE = [
   { size: 'text-32', label: '32 / mono headline (recipient receives)', mono: true },
@@ -63,8 +67,8 @@ export function SystemPage() {
         <h1 className="text-24 font-600 tracking-tight text-text-primary">Design system</h1>
         <p className="mt-1 max-w-2xl text-13 text-text-secondary">
           The token layer, type scale, and component states behind the prototype. Money is
-          typographic material — every amount is mono/tabular, sized by importance. Violet marks AI
-          presence and nothing else.
+          typographic material — every amount is mono/tabular, sized by importance. Brand blue is
+          for actions, links, and active nav; purple marks AI presence and nothing else.
         </p>
       </header>
 
@@ -204,6 +208,7 @@ function SwatchGrid() {
     <div className="space-y-4">
       <TokenRow tokens={SURFACE_TOKENS} />
       <TokenRow tokens={ACCENT_TOKENS} />
+      <TokenRow tokens={FILL_TOKENS} />
       <div className="flex flex-wrap gap-3">
         {TEXT_TOKENS.map((t) => (
           <span key={t} className="text-13" style={{ color: `var(${t})` }}>

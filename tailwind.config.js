@@ -18,6 +18,9 @@ export default {
       page: 'var(--surface-page)',
       raised: 'var(--surface-raised)',
       sunken: 'var(--surface-sunken)',
+      'surface-hover': 'var(--surface-hover)',
+      selected: 'var(--surface-selected)',
+      inverse: 'var(--surface-inverse)',
 
       // Borders
       'border-subtle': 'var(--border-subtle)',
@@ -26,28 +29,35 @@ export default {
       // Text
       'text-primary': 'var(--text-primary)',
       'text-secondary': 'var(--text-secondary)',
+      'text-secondary-tint': 'var(--text-secondary-tint)',
       'text-tertiary': 'var(--text-tertiary)',
+      'text-disabled': 'var(--text-disabled)',
       'text-money': 'var(--text-money)',
       'text-inverse': 'var(--text-inverse)',
+      'text-link': 'var(--text-link)',
 
-      // AI (violet — provenance only, never primary actions)
+      // AI (purple — provenance only, never primary actions)
       ai: 'var(--accent-ai)',
       'ai-surface': 'var(--accent-ai-surface)',
       'ai-border': 'var(--accent-ai-border)',
 
-      // Status
+      // Status (base = AA text tone; -fill = vivid 500 for badges/icons/charts)
       success: 'var(--status-success)',
       'success-surface': 'var(--status-success-surface)',
+      'success-fill': 'var(--status-success-fill)',
       warn: 'var(--status-warn)',
       'warn-surface': 'var(--status-warn-surface)',
+      'warn-fill': 'var(--status-warn-fill)',
       danger: 'var(--status-danger)',
       'danger-surface': 'var(--status-danger-surface)',
+      'danger-fill': 'var(--status-danger-fill)',
       info: 'var(--status-info)',
       'info-surface': 'var(--status-info-surface)',
 
-      // Actions (near-black primary)
+      // Actions (brand blue primary)
       'action-primary': 'var(--action-primary)',
       'action-primary-hover': 'var(--action-primary-hover)',
+      'action-primary-active': 'var(--action-primary-active)',
     },
     borderColor: ({ theme }) => ({
       ...theme('colors'),

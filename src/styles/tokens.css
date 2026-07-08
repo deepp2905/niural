@@ -1,126 +1,151 @@
 /*
- * Paynetic design tokens — two layers (§8b).
- *   1. Primitives: the raw ramp. Never consumed directly in components.
+ * Niural design tokens — two layers.
+ *   1. Primitives: the raw ramps straight from the brand palette. Never
+ *      consumed directly in components.
  *   2. Semantic aliases: the only layer components touch. Dark mode remaps
  *      THIS layer only, which is what lets the review screen theme-toggle.
  *
- * Rule enforced by the palette: violet marks AI presence and nothing else.
- * Primary actions are near-black (--gray-12).
+ * Palette rules:
+ *   • Brand blue (--primary-600) is buttons, links, and active nav.
+ *   • Purple (--ai-600) marks AI presence and nothing else.
+ *   • Status 500s are fills (badges, icons, charts); status 700s are the
+ *     AA-safe text tones. Inverse surfaces (tooltips, dark toasts) are gray-800,
+ *     kept distinct from the blue primary action.
  */
 
 :root {
-  /* ---- Primitives: cool gray ramp (12 steps) ---- */
-  --gray-0: #fbfbfc;
-  --gray-1: #f4f5f7;
-  --gray-2: #eceef1;
-  --gray-3: #e2e5ea;
-  --gray-4: #d5d9e0;
-  --gray-5: #c1c7d0;
-  --gray-6: #a6adba;
-  --gray-7: #868e9c;
-  --gray-8: #6b7280;
-  --gray-9: #4b5361;
-  --gray-10: #2f3540;
-  --gray-11: #1c2027;
-  --gray-12: #101114;
+  /* ---- Primitives: gray ---- */
+  --gray-0:   #ffffff;
+  --gray-25:  #fafbfc;
+  --gray-50:  #f6f8fa;
+  --gray-100: #eef1f5;
+  --gray-200: #e1e6ec;
+  --gray-300: #c9d1db;
+  --gray-400: #9aa4b0;
+  --gray-500: #6b7684;
+  --gray-600: #545e6c;
+  --gray-700: #3d4654;
+  --gray-800: #2a313c;
+  --gray-900: #171c24;
 
-  /* ---- Primitives: violet (AI only) ---- */
-  --violet-50: #f2effe;
-  --violet-100: #e5defd;
-  --violet-200: #cbbdfb;
-  --violet-300: #a98ff9;
-  --violet-500: #7c5cfc;
-  --violet-600: #6a45f0;
-  --violet-700: #5a37cf;
+  /* ---- Primitives: primary (brand blue) ----
+   * 100/600/700/800 are from the palette; 300/500 are dark-mode derivations. */
+  --primary-100: #e8f0f8;
+  --primary-300: #7ba3cf;
+  --primary-500: #24659f;
+  --primary-600: #1d568d;
+  --primary-700: #174874;
+  --primary-800: #123a5e;
+
+  /* ---- Primitives: AI (purple — AI provenance only) ----
+   * 50/100/600/700 are from the palette; 300 is a dark-mode derivation. */
+  --ai-50:  #f6f4fc;
+  --ai-100: #ede9f8;
+  --ai-300: #b4a6e6;
+  --ai-600: #6650bf;
+  --ai-700: #533b9e;
 
   /* ---- Primitives: status ---- */
-  --green-50: #e8f6ee;
-  --green-500: #1f9d55;
-  --green-600: #17843f;
-  --green-700: #0f6a30;
+  --success-50:  #e6f7f5;
+  --success-500: #00b3a4;
+  --success-700: #007a70;
 
-  --amber-50: #fdf3e2;
-  --amber-500: #c07d10;
-  --amber-600: #a5680a;
-  --amber-700: #855207;
+  --warning-50:  #fdf6e7;
+  --warning-500: #f59e0b;
+  --warning-700: #b45309;
 
-  --red-50: #fdecec;
-  --red-500: #d8434a;
-  --red-600: #bd2b32;
-  --red-700: #9c1f26;
-
-  --blue-50: #e8f1fd;
-  --blue-500: #2f74d0;
-  --blue-600: #205fb3;
-  --blue-700: #184c90;
+  --error-50:  #fff0ed;
+  --error-500: #ff715b;
+  --error-700: #c2402b;
 
   /* ================= Semantic aliases (light) ================= */
-  --surface-page: var(--gray-0);
-  --surface-raised: #ffffff;
-  --surface-sunken: var(--gray-1);
+  --surface-page:     var(--gray-25);
+  --surface-raised:   var(--gray-0);
+  --surface-sunken:   var(--gray-50);
+  --surface-hover:    var(--gray-50);
+  --surface-selected: var(--primary-100);
+  --surface-inverse:  var(--gray-800);
 
-  --border-subtle: var(--gray-3);
-  --border-strong: var(--gray-5);
+  --border-subtle: var(--gray-200);
+  --border-strong: var(--gray-300);
 
-  --text-primary: var(--gray-12);
-  --text-secondary: var(--gray-8);
-  --text-tertiary: var(--gray-7);
-  --text-money: var(--gray-12);
-  --text-inverse: var(--gray-0);
+  --text-primary:        var(--gray-900);
+  --text-secondary:      var(--gray-600);
+  --text-secondary-tint: var(--gray-600);
+  --text-tertiary:       var(--gray-500);
+  --text-disabled:       var(--gray-400);
+  --text-money:          var(--gray-900);
+  --text-inverse:        var(--gray-0);
+  --text-link:           var(--primary-600);
 
-  --accent-ai: var(--violet-600);
-  --accent-ai-surface: var(--violet-50);
-  --accent-ai-border: var(--violet-200);
+  --accent-ai:         var(--ai-600);
+  --accent-ai-surface: var(--ai-100);
+  --accent-ai-border:  var(--ai-600);
 
-  --status-success: var(--green-600);
-  --status-success-surface: var(--green-50);
-  --status-warn: var(--amber-600);
-  --status-warn-surface: var(--amber-50);
-  --status-danger: var(--red-600);
-  --status-danger-surface: var(--red-50);
-  --status-info: var(--blue-600);
-  --status-info-surface: var(--blue-50);
+  --status-success:         var(--success-700);
+  --status-success-surface: var(--success-50);
+  --status-success-fill:    var(--success-500);
+  --status-warn:            var(--warning-700);
+  --status-warn-surface:    var(--warning-50);
+  --status-warn-fill:       var(--warning-500);
+  --status-danger:          var(--error-700);
+  --status-danger-surface:  var(--error-50);
+  --status-danger-fill:     var(--error-500);
+  --status-info:            var(--primary-600);
+  --status-info-surface:    var(--primary-100);
 
-  --action-primary: var(--gray-12);
-  --action-primary-hover: var(--gray-11);
+  --action-primary:        var(--primary-600);
+  --action-primary-hover:  var(--primary-700);
+  --action-primary-active: var(--primary-800);
 
-  --focus-ring: var(--violet-500);
+  --focus-ring: var(--primary-600);
   color-scheme: light;
 }
 
 /* ================= Dark mode — semantic remap only (§5, review screen) =========
  * Applied by adding data-theme="dark" to a scope (the review screen root).
- * Primitives are untouched; we just re-point the semantic aliases. */
+ * Primitives are untouched; we re-point the semantic aliases and derive lighter
+ * accent tones so blue/purple/status stay legible on the dark surfaces. */
 [data-theme='dark'] {
-  --surface-page: var(--gray-12);
-  --surface-raised: var(--gray-11);
-  --surface-sunken: #0b0c0f;
+  --surface-page:     var(--gray-900);
+  --surface-raised:   var(--gray-800);
+  --surface-sunken:   #10141a;
+  --surface-hover:    #20262f;
+  --surface-selected: rgba(29, 86, 141, 0.28);
+  --surface-inverse:  var(--gray-800);
 
-  --border-subtle: var(--gray-10);
-  --border-strong: var(--gray-9);
+  --border-subtle: var(--gray-700);
+  --border-strong: var(--gray-600);
 
-  --text-primary: var(--gray-0);
-  --text-secondary: var(--gray-6);
-  --text-tertiary: var(--gray-7);
-  --text-money: var(--gray-0);
-  --text-inverse: var(--gray-12);
+  --text-primary:        var(--gray-25);
+  --text-secondary:      var(--gray-400);
+  --text-secondary-tint: var(--gray-400);
+  --text-tertiary:       var(--gray-500);
+  --text-disabled:       var(--gray-600);
+  --text-money:          var(--gray-25);
+  --text-inverse:        var(--gray-0);
+  --text-link:           var(--primary-300);
 
-  --accent-ai: var(--violet-300);
-  --accent-ai-surface: rgba(124, 92, 252, 0.14);
-  --accent-ai-border: rgba(124, 92, 252, 0.36);
+  --accent-ai:         var(--ai-300);
+  --accent-ai-surface: rgba(102, 80, 191, 0.20);
+  --accent-ai-border:  rgba(102, 80, 191, 0.50);
 
-  --status-success: #46c47c;
-  --status-success-surface: rgba(31, 157, 85, 0.16);
-  --status-warn: #e0a53a;
-  --status-warn-surface: rgba(192, 125, 16, 0.18);
-  --status-danger: #ef6b70;
-  --status-danger-surface: rgba(216, 67, 74, 0.18);
-  --status-info: #5b9bea;
-  --status-info-surface: rgba(47, 116, 208, 0.18);
+  --status-success:         #35c9b8;
+  --status-success-surface: rgba(0, 179, 164, 0.16);
+  --status-success-fill:    var(--success-500);
+  --status-warn:            #f0b34d;
+  --status-warn-surface:    rgba(245, 158, 11, 0.16);
+  --status-warn-fill:       var(--warning-500);
+  --status-danger:          #ff8f7d;
+  --status-danger-surface:  rgba(255, 113, 91, 0.16);
+  --status-danger-fill:     var(--error-500);
+  --status-info:            #5b9bea;
+  --status-info-surface:    rgba(29, 86, 141, 0.24);
 
-  --action-primary: var(--gray-0);
-  --action-primary-hover: var(--gray-2);
+  --action-primary:        var(--primary-600);
+  --action-primary-hover:  var(--primary-500);
+  --action-primary-active: var(--primary-800);
 
-  --focus-ring: var(--violet-300);
+  --focus-ring: var(--primary-300);
   color-scheme: dark;
 }

@@ -6,9 +6,9 @@ export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  // Primary is near-black, never violet — violet is AI-only (§8a).
+  // Primary is brand blue; purple is AI-only and never an action color (§8a).
   primary:
-    'bg-action-primary text-text-inverse hover:bg-action-primary-hover disabled:bg-border-strong disabled:text-text-tertiary',
+    'bg-action-primary text-text-inverse hover:bg-action-primary-hover disabled:bg-border-strong disabled:text-text-disabled',
   secondary:
     'border border-border-strong bg-raised text-text-primary hover:bg-sunken disabled:text-text-tertiary',
   ghost: 'text-text-secondary hover:bg-sunken hover:text-text-primary disabled:text-text-tertiary',

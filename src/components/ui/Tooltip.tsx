@@ -20,12 +20,12 @@ export function Tooltip({
           side={side}
           sideOffset={5}
           className={cn(
-            'z-50 max-w-[220px] rounded-md bg-action-primary px-2.5 py-1.5 text-12 text-text-inverse shadow-popover',
+            'z-50 max-w-[220px] rounded-md bg-inverse px-2.5 py-1.5 text-12 text-text-inverse shadow-popover',
             'popover-motion',
           )}
         >
           {content}
-          <RadixTooltip.Arrow className="fill-[var(--action-primary)]" />
+          <RadixTooltip.Arrow className="fill-[var(--surface-inverse)]" />
         </RadixTooltip.Content>
       </RadixTooltip.Portal>
     </RadixTooltip.Root>

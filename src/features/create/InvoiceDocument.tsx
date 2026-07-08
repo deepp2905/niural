@@ -38,8 +38,8 @@ export function InvoiceDocument({
               left: `${r.rect.left}%`,
               width: `${r.rect.width}%`,
               height: `${r.rect.height}%`,
-              background: 'rgba(124, 92, 252, 0.16)',
-              boxShadow: '0 0 0 1.5px rgba(124, 92, 252, 0.6)',
+              background: 'rgba(102, 80, 191, 0.16)',
+              boxShadow: '0 0 0 1.5px rgba(102, 80, 191, 0.6)',
             }}
           />
         ))}
