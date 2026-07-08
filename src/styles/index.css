@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+/* Inter + IBM Plex Mono are loaded via <link rel="preconnect"> in index.html
+ * (earlier, non-render-blocking) rather than a CSS @import. */
 @import './tokens.css';
 
 @tailwind base;
